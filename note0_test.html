@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+
+
+    <body>
+        <h1>Notes</h1>
+
+        <ul id="notes"></ul>
+
+        <form id="forms">
+            <input type="text" id="note" placeholder="Enter note here">
+            <button id="submit">Submit</button>
+        </form>
+
+        <script>
+
+            document.addEventListener("DOMContentLoaded", () =>{
+
+                document.querySelector("#submit").disabled = true;
+
+                document.querySelector("#note").onkeyup = () => {
+                    if (document.querySelector("#note").value.length > 0)
+                        document.querySelector("#submit").disabled = false;
+                    else
+                        document.querySelector("#submit").disabled = true;
+                }
+                document.querySelector("#forms").onsubmit = () => {
+                
+                    const li = document.createElement("li");
+                    li.innerHTML = document.querySelector("#note").value;
+
+                    document.querySelector("#notes").append(li);
+                    document.querySelector("#submit").disabled = true;
+
+                    document.querySelector("#note").value = "";
+
+                    return false;
+
+                };
+            });
+        </script>
+    </body>
+</html>

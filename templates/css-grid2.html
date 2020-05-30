@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Grid2</title>
+    <style>
+        .wrapper{
+            display: grid;
+            /* grid-template-columns: 1fr 2fr 1fr;     */
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap:1em;
+            /* grid-auto-rows:100px; */
+            grid-auto-rows: minmax(50px, auto);
+        }
+        .wrapper > div:nth-child(odd){
+        background:#ddd;
+        }
+
+        .wrapper > div {
+            background: #eee;
+            padding:1em;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div>
+            Lorem ipsum dolor sit.
+        </div>
+        <div>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam, eaque optio iure eos fugiat sequi aliquid rem, ipsa corrupti unde esse natus sed ad recusandae possimus dolor voluptates quaerat quia!
+        </div>
+        <div>
+            Lorem ipsum dolor sit.
+        </div>
+        <div>
+            Lorem ipsum dolor sit.
+        </div>
+        <div>
+            Lorem ipsum dolor sit.
+        </div>
+        <div>
+            Lorem ipsum dolor sit.
+        </div>
+    </div>
+</body>
+</html>

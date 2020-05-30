@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Grids</title>
+    <style> 
+        .wrapper{
+            display:grid;
+            grid-template-columns: 70% 30%;
+            /* grid-column-gap:1em;
+            grid-row-gap: 1em; */
+            grid-gap:1em;
+        }
+
+        .wrapper > div:nth-child(odd){
+        background:#ddd;
+        }
+
+        .wrapper > div {
+            background: #eee;
+            padding:1em;
+        }
+ 
+
+    </style>
+</head>
+<body>
+    <h2>This is the start of learning to layout a webpage</h2>
+    <div class="wrapper">
+        <div>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos nam nihil molestias quo omnis ut recusandae neque. 
+            Obcaecati beatae voluptatem fugiat eos sed. Ex officiis illum inventore omnis vel itaque, reiciendis sequi aspernatur! 
+            Nam illo quibusdam error quisquam, at culpa. Ipsa fuga rem culpa exercitationem, atque velit maxime cumque dolores obcaecati 
+            minima reprehenderit, 
+            veniam, dignissimos ducimus libero? Accusamus rem eius, aliquam molestias exercitationem incidunt cupiditate eveniet eum sint quibusdam natus quas 
+            corrupti unde quia nostrum error aliquid accusantium consectetur culpa!
+        </div>
+
+        <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum saepe perferendis corporis aliquam quod eveniet facere asperiores rerum mollitia, 
+            consequuntur ullam numquam alias magni quam accusamus. Laudantium libero autem quam?
+        </div>
+        
+        <div>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos nam nihil molestias quo omnis ut recusandae neque. 
+            Obcaecati beatae voluptatem fugiat eos sed. Ex officiis illum inventore omnis vel itaque, reiciendis sequi aspernatur! 
+            Nam illo quibusdam error quisquam, at culpa. Ipsa fuga rem culpa exercitationem, atque velit maxime cumque dolores obcaecati 
+            minima reprehenderit, 
+            veniam, dignissimos ducimus libero? Accusamus rem eius, aliquam molestias exercitationem incidunt cupiditate eveniet eum sint quibusdam natus quas 
+            corrupti unde quia nostrum error aliquid accusantium consectetur culpa!
+        </div>
+      
+    </div>
+    
+</body>
+</html>

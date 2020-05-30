@@ -1,0 +1,113 @@
+{% extends "layout.html" %}
+
+{% block title %}Chat App{% endblock %}
+
+{% block link %}
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+        <script src="{{ url_for('static', filename='index2.js') }}"></script>
+{% endblock %}
+
+
+{% block heading %}<h2>My Chat application</h2>{% endblock %}
+
+
+{% block body %}
+        <script type="text/javascript">
+
+            const temp = `{{ username|e }}`;
+
+            if (temp){
+            var username = temp;
+            localStorage.setItem("username",temp)};
+
+            if (!temp){
+            var username = localStorage.getItem("username")
+            }
+
+        </script>
+
+
+        <!--Nav Bar-->
+        <nav>
+
+        </nav>
+        <!--Logout-->
+        <div>
+            <form action="{{url_for('start')}}">
+            <div class="form-group">
+                <button class="btn btn-primary">
+                    Logout
+                </button>
+            </div>
+            </form>
+        </div>
+
+        <!--Body-->
+        <div class="main-section">
+
+             <!--Channel area-->
+            <div id="left-area">
+
+                <h5 id="channel-header">
+                    Channels
+                </h5>
+
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+
+                        <small id="email" class="flashes">
+                            {{messages[0]}}
+                        </small>
+                    {% endif %}
+                 {% endwith %}
+
+                <div id="notification_section">
+                </div>
+
+                <form id="addchannel" action="{{url_for('channel')}}" method="post">
+                    <input type="text" name="usr-channel" placeholder="Add Channel" autocomplete="off">
+                    <button id="add-channel">
+                        Add Channel
+                    </button>
+                <br>
+                <br>
+                </form>
+
+
+                <div id="list_of_channels">
+                </div>
+
+                {% for channel in channels %}
+                    <li class="user_channel">
+                        {{ channel|title }}
+                    </li>
+                    <br>
+                {% endfor %}
+
+            </div>
+
+
+              <!--Message area-->
+            <div id="right-area">
+
+                <div id="message-area" class="col-lg-6">
+                </div>
+
+                <div id="textbox">
+                    <input type="text" id="usertext">
+                </div>
+
+                <button id="send" type="text" placeholder="Enter Message">
+                    Send
+                </button>
+
+            </div>
+
+        </div>
+
+{% endblock %}
+
+
+
+
+

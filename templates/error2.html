@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block title %} Error {% endblock %}
+
+{% block heading %} Login {% endblock %}
+
+{% block body %}
+<small class="form-text text-muted">{{message}} <li><a href="{{url_for('register')}}">Register Instead</a></li></small>
+<div>
+        <form action="{{url_for('index')}}" method='post'>
+        <div class="form-group">
+            <p> Username:
+                <input class="form-control" name="username" placeholder="Enter user name">
+            </p>
+            <p> Password:
+            <input class="form-control" name="password" type="password" placeholder="Enter password">
+            </p>
+            <button class="btn btn-primary">Login</button>
+        </div>
+        </form>
+    </div>
+
+
+{% endblock %}
