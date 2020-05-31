@@ -70,9 +70,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 socket.emit("leave", {"username": username, "room": channel});
                 socket.emit("just joined", {"username": username, "room": newchannel});
 
-                if(li.style.color != 'red'){
-                li.style.color === 'red'}
-                else {li.style.color === 'black'}
+//                if(li.style.color != 'red'){
+//                li.style.color = 'red'}
+//                else {li.style.color = 'black'}
                 channel = newchannel;
                 document.querySelector("#usertext").focus()
             }
@@ -84,6 +84,8 @@ document.addEventListener('DOMContentLoaded', () => {
 //display user joined message-------------------------
      socket.on("user joined", data => {
      document.querySelector("#notification_section").innerHTML = `${data.details}`;
+     const channelmessages = `${data.storedmessages}`
+     console.log(channelmessages)
      document.querySelector("#message-area").innerHTML = `${data.storedmessages}`
 
     })

@@ -104,7 +104,7 @@ def join(data):
         storedmessages[room] = list()
 
     emit("user joined", {"details": username + ' has joined the ' + room + ' channel.',
-                         "storedmessages": storedmessages[room]}, room=room)
+                         "storedmessages": storedmessages[room], "room": room}, room=room)
 
 
 @socketio.on("leave")
