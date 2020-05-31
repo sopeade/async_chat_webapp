@@ -8,7 +8,7 @@
 {% endblock %}
 
 
-{% block heading %}<h2>My Chat application</h2>{% endblock %}
+{% block heading %}My Chat Application{% endblock %}
 
 
 {% block body %}
@@ -20,9 +20,11 @@
             var username = temp;
             localStorage.setItem("username",temp)};
 
-            if (!temp){
+            else if (!temp){
             var username = localStorage.getItem("username")
             }
+
+
 
         </script>
 
@@ -46,61 +48,65 @@
         <div class="main-section">
 
              <!--Channel area-->
-            <div id="left-area">
+            <div class="left-area">
 
-                <h5 id="channel-header">
+                <h3 id="channel-header">
                     Channels
-                </h5>
+                </h3>
 
-                {% with messages = get_flashed_messages() %}
-                    {% if messages %}
+                <div id="message-flash">
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
 
-                        <small id="email" class="flashes">
-                            {{messages[0]}}
-                        </small>
-                    {% endif %}
-                 {% endwith %}
+                            <small id="email" class="flashes">
+                                {{messages[0]}}
+                            </small>
+                        {% endif %}
+                    {% endwith %}
+                </div>
 
                 <div id="notification_section">
                 </div>
 
-                <form id="addchannel" action="{{url_for('channel')}}" method="post">
-                    <input type="text" name="usr-channel" placeholder="Add Channel" autocomplete="off">
-                    <button id="add-channel">
-                        Add Channel
-                    </button>
-                <br>
-                <br>
-                </form>
+                <div id="channel-form">
+                    <form id="addchannel" action="{{url_for('channel')}}" method="post">
+                        <input type="text" name="usr-channel" placeholder="Add Channel" autocomplete="off">
+                        <button id="add-channel">
+                            Add Channel
+                        </button>
+                        <br>
+                        <br>
+                    </form>
+                </div>
 
 
                 <div id="list_of_channels">
+                    {% for channel in channels %}
+                        <li class="user_channel">
+                            {{ channel|title }}
+                        </li>
+                        <br>
+                    {% endfor %}
                 </div>
-
-                {% for channel in channels %}
-                    <li class="user_channel">
-                        {{ channel|title }}
-                    </li>
-                    <br>
-                {% endfor %}
 
             </div>
 
 
               <!--Message area-->
-            <div id="right-area">
+            <div class="right-area">
 
-                <div id="message-area" class="col-lg-6">
+                <div id="message-area">
                 </div>
-
-                <div id="textbox">
-                    <input type="text" id="usertext">
+                <div class="textsend-area">
+                    <!--<div id="textbox">-->
+                    <textarea id="usertext" type="text" ></textarea>
+                    <!--</div>-->
+                    <!--<div id="send_button">-->
+                        <button id="send" type="text" placeholder="Enter Message">
+                            Send
+                        </button>
+                    <!--</div>-->
                 </div>
-
-                <button id="send" type="text" placeholder="Enter Message">
-                    Send
-                </button>
-
             </div>
 
         </div>

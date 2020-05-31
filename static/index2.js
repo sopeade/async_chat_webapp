@@ -4,32 +4,32 @@ document.addEventListener('DOMContentLoaded', () => {
 // Connect to websocket
    var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
-//Get channel from local storage and initialize value
+//Get channel from local storage or initialize value
    if(!localStorage.getItem("channel")){
    localStorage.setItem("channel", "Default")
    }
-   let channel = localStorage.getItem("channel");
+   var channel = localStorage.getItem("channel");
 
 
 
 //Send messages--------------------------------------------
     socket.on('connect', () => {
-//    Disable send button by default
-    document.querySelector("#send").disabled = true;
-    document.querySelector("#usertext").onkeyup = () => {
-    if (document.querySelector("#usertext").value.length > 0)
-        document.querySelector("#send").disabled = false;
-    else
+
+//      Disable send button by default
         document.querySelector("#send").disabled = true;
-    }
+        document.querySelector("#usertext").onkeyup = () => {
+
+            if (document.querySelector("#usertext").value.length > 0)
+                document.querySelector("#send").disabled = false;
+            else
+                document.querySelector("#send").disabled = true;
+        }
 
         document.querySelector("#send").onclick = () => {
-
 
             document.querySelector("#send").disabled = true;
             let usertext = document.querySelector("#usertext").value
             socket.emit("text message", {"usermessage": usertext, "username": username, "room": channel});
-            console.log(usertext)
             document.querySelector("#usertext").value = '';
         }
         return false
@@ -42,6 +42,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const message_p = document.createElement("p");
         const username_p = document.createElement("p");
         const time_p = document.createElement("p")
+
+        time_p.setAttribute("class", "actual_time" )
+        username_p.setAttribute("class", "actual_username" )
+        message_p.setAttribute("class", "actual_message")
 
         message_p.innerHTML = `${data.usermessage}`;
         username_p.innerHTML = `${data.username}`;
@@ -57,18 +61,20 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll(".user_channel").forEach(li => {
         li.onclick = () => {
             const newchannel = li.innerHTML;
-//            document.querySelector("li").style.color = 'blue'
             if (newchannel === channel) {
                 document.querySelector("#notification_section").innerHTML = `${username} is already in the ${channel} channel.`;
             }
 
             else {
-                document.querySelector("#message-area").innerHTML = '';
-//                document.querySelector("#notification_section").innerHTML = `${username} is now in the ${channel} channel.`;
+                document.querySelector("#message-area").innerHTML = ''
                 socket.emit("leave", {"username": username, "room": channel});
                 socket.emit("just joined", {"username": username, "room": newchannel});
-//                console.log(newchannel)
+
+                if(li.style.color != 'red'){
+                li.style.color === 'red'}
+                else {li.style.color === 'black'}
                 channel = newchannel;
+                document.querySelector("#usertext").focus()
             }
             localStorage.setItem("channel", channel)
         }
@@ -85,7 +91,5 @@ document.addEventListener('DOMContentLoaded', () => {
      socket.on("user left", data => {
      document.querySelector("#notification_section").innerHTML = `${data.details}`;
     })
-
-
 
 });

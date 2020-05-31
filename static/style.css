@@ -1,6 +1,53 @@
+/*Page Layout */
 .main-section{
 display: grid;
-grid-template-columns: 30% 70%;
-grid-column-gap: 1em;
-grid-row-gap: 1em;
+grid-template-columns: 25% 75%;
+grid-template-rows: 75%;
+/*grid-auto-rows: minmax(1000px, auto)*/
+grid-gap: 1em;
+border-style: double;
 }
+
+/*Channel section*/
+.left-area{
+background: #ddd;
+}
+#list_of_channels{padding: 1em;}
+
+
+/*Message section*/
+.right-area{
+display: grid;
+grid-gap: 1em;
+grid-template-rows: 8fr 2fr;
+}
+
+#message-area{
+border-style: solid;
+margin-right: 140px;
+}
+
+.textsend-area{
+display: grid;
+grid-gap: 1em;
+grid-template-columns:5fr 2fr;
+justify-items: start;
+}
+
+/*#textbox{background-color: blue; width:100%}*/
+#usertext {width: 100%; height: auto; wrap="true"}
+#send{width: auto; height: 50%;}
+/*display:grid;
+align-items:end;}*/
+
+
+/*Text Formatting*/
+#channel-header{}
+#list_of_channels :hover{
+background-color: #d6eaf8
+}
+
+.actual_time {font-size: 12px; color:blue;}
+.actual_username {font-size: 12px; font-style: italic;}
+.actual_message {font-size: 15px;}
+

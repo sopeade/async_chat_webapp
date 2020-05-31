@@ -4,7 +4,7 @@ from time import localtime, strftime
 from flask import Flask, render_template, request, session, redirect, flash
 from flask_socketio import SocketIO, emit, join_room, leave_room
 
-app = Flask(__name__)go
+app = Flask(__name__)
 app.config["SECRET_KEY"] = "Mysecret"
 socketio = SocketIO(app)
 
@@ -67,7 +67,7 @@ def channel():
     newChannel = request.form.get("usr-channel")
 
     if not channels and not newChannel:
-        flash("Channel field is empty. Please create a channel")
+        flash("A Channel has not been created yet. Please create a channel")
     elif channels and not newChannel:
         flash("A channel has to have a name. To create a new channel, Please enter a name")
     elif newChannel in channels:
