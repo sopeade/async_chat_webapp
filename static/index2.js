@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let usertext = document.querySelector("#usertext").value
             socket.emit("text message", {"usermessage": usertext, "username": username, "room": channel});
             document.querySelector("#usertext").value = '';
+            document.querySelector("#usertext").focus()
         }
         return false
 
@@ -84,9 +85,26 @@ document.addEventListener('DOMContentLoaded', () => {
 //display user joined message-------------------------
      socket.on("user joined", data => {
      document.querySelector("#notification_section").innerHTML = `${data.details}`;
-     const channelmessages = `${data.storedmessages}`
-     console.log(channelmessages)
-     document.querySelector("#message-area").innerHTML = `${data.storedmessages}`
+//     const channelmsgs = `${data.storedmessages}`
+//     console.log(channelmsgs)
+
+     const jsonmsg = JSON.parse(`${data.storedjsonmessage}`)
+     console.log(jsonmsg)
+     const jsonmsglength = jsonmsg.length;
+     console.log(jsonmsglength)
+
+
+     for(var i = 0; i< jsonmsglength; i++){
+     const storedmsg_p = document.createElement("p");
+     storedmsg_p.innerHTML = jsonmsg[i]
+     document.querySelector("#message-area").append(storedmsg_p);
+     }
+
+
+
+//     document.querySelector("#message-area").innerHTML = `${data.storedmessages}`
+//       document.querySelector("#message-area").innerHTML = jsonmessage
+
 
     })
 

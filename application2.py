@@ -1,12 +1,14 @@
-from typing import Dict, Any
-
+import sys
 from time import localtime, strftime
 from flask import Flask, render_template, request, session, redirect, flash
 from flask_socketio import SocketIO, emit, join_room, leave_room
+import json
+
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "Mysecret"
 socketio = SocketIO(app)
+
 
 usersregistered = {}
 channels = []
@@ -16,6 +18,7 @@ storedmessages = dict()
 @app.route("/", methods=["GET", "POST"])
 def start():
     return render_template("signin.html")
+
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -87,6 +90,10 @@ def mydata(data):
         storedmessages[room].extend([username, usermessage, timestamp])
     except KeyError:
         storedmessages[room] = list()
+        storedmessages[room].extend([username, usermessage, timestamp])
+    print("storedmessages on sending a message///////////////////////////////////////////")
+    print(storedmessages[room])
+
     # if len(storedmessages[room]) > 3:
     #     del storedmessages[room][0:2]
 
@@ -102,9 +109,15 @@ def join(data):
         storedmessages[room]
     except KeyError:
         storedmessages[room] = list()
+    json_messages = json.dumps(storedmessages[room])
+    print("stored_messages on selecting a channel*****************************************")
+
+    print(storedmessages[room])
+    print(json_messages)
 
     emit("user joined", {"details": username + ' has joined the ' + room + ' channel.',
-                         "storedmessages": storedmessages[room], "room": room}, room=room)
+                         "storedmessages": storedmessages[room], "storedjsonmessage": json_messages,
+                         "room": room}, room=room)
 
 
 @socketio.on("leave")
