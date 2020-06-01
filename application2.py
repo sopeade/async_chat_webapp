@@ -31,8 +31,8 @@ def register1():
     username = request.form.get("username")
     password = request.form.get("password")
     session['username'] = username
-    if username == '':
-        return render_template("error.html", message="A username has not been entered. Please try again or ")
+    if username == '' or password == '':
+        return render_template("error.html", message="A username/password has not been entered. Please try again or ")
     if username in usersregistered:
         return render_template("error1.html", message="That username already exists. Please try again or ")
 
@@ -91,11 +91,12 @@ def mydata(data):
     except KeyError:
         storedmessages[room] = list()
         storedmessages[room].extend([username, usermessage, timestamp])
-    print("storedmessages on sending a message///////////////////////////////////////////")
-    print(storedmessages[room])
+    print("single message on sending a message///////////////////////////////////////////")
+    # print(storedmessages[room])
+    print(usermessage)
 
-    # if len(storedmessages[room]) > 3:
-    #     del storedmessages[room][0:2]
+    if len(storedmessages[room]) > 300:
+        del storedmessages[room][0:3]
 
     emit("sent message", {"usermessage": usermessage, "username": username, "timestamp": timestamp}, room=room)
 
@@ -112,12 +113,12 @@ def join(data):
     json_messages = json.dumps(storedmessages[room])
     print("stored_messages on selecting a channel*****************************************")
 
-    print(storedmessages[room])
+    print(username)
     print(json_messages)
 
     emit("user joined", {"details": username + ' has joined the ' + room + ' channel.',
-                         "storedmessages": storedmessages[room], "storedjsonmessage": json_messages,
-                         "room": room}, room=room)
+                         "storedjsonmessage": json_messages, "username": username, "room": room}, room=room)
+#     , "storedmessages": storedmessages[room]
 
 
 @socketio.on("leave")

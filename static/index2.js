@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
             socket.emit("text message", {"usermessage": usertext, "username": username, "room": channel});
             document.querySelector("#usertext").value = '';
             document.querySelector("#usertext").focus()
+//            console.log(usertext)
         }
         return false
 
@@ -44,13 +45,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const username_p = document.createElement("p");
         const time_p = document.createElement("p")
 
-        time_p.setAttribute("class", "actual_time" )
-        username_p.setAttribute("class", "actual_username" )
+        time_p.setAttribute("class", "actual_time")
+        username_p.setAttribute("class", "actual_username")
         message_p.setAttribute("class", "actual_message")
 
         message_p.innerHTML = `${data.usermessage}`;
         username_p.innerHTML = `${data.username}`;
         time_p.innerHTML = `${data.timestamp}`;
+
+
+        console.log(`${data.usermessage}`)
 
         document.querySelector("#message-area").append(username_p);
         document.querySelector("#message-area").append(message_p);
@@ -82,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
 
-//display user joined message-------------------------
+//display a channels previous messages for a select user-------------------------
      socket.on("user joined", data => {
      document.querySelector("#notification_section").innerHTML = `${data.details}`;
 //     const channelmsgs = `${data.storedmessages}`
@@ -92,14 +96,16 @@ document.addEventListener('DOMContentLoaded', () => {
      console.log(jsonmsg)
      const jsonmsglength = jsonmsg.length;
      console.log(jsonmsglength)
+     console.log(`${data.username}`)
 
-
-     for(var i = 0; i< jsonmsglength; i++){
-     const storedmsg_p = document.createElement("p");
-     storedmsg_p.innerHTML = jsonmsg[i]
-     document.querySelector("#message-area").append(storedmsg_p);
+     if(username ===`${data.username}`){
+         for(var i = 0; i< jsonmsglength; i++){
+         const storedmsg_p = document.createElement("p");
+         storedmsg_p.setAttribute("class","returned_data")
+         storedmsg_p.innerHTML = jsonmsg[i]
+         document.querySelector("#message-area").append(storedmsg_p);
+         }
      }
-
 
 
 //     document.querySelector("#message-area").innerHTML = `${data.storedmessages}`
