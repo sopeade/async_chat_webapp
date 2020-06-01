@@ -11,6 +11,7 @@ border-style: double;
 /*Channel section*/
 .left-area{
 background: #ddd;
+float: left;
 }
 #list_of_channels{padding: 1em;}
 
