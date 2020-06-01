@@ -19,10 +19,17 @@ float: left;
 .channel_txtbox{width: 20%;}
 */
 
-/*
+
+@media(max-width: 750px) {
+
+    .channel_txtbox {
+    max-width: 90%;
+    }
+
+    #add-channel{
+    max-width: 90%;
+    }
 }
-@media(max-width: 750px} {.channel_txtbox{width: 2em;}}
-*/
 
 /*Message section*/
 .right-area{

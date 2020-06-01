@@ -72,7 +72,7 @@ def index():
 # Route6
 @app.route("/logout", methods=["GET"])
 def logout():
-    usersregistered.remove(session['username'])
+    # usersregistered.remove(session['username'])
     return redirect("/")
 
 

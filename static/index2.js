@@ -9,7 +9,16 @@ document.addEventListener('DOMContentLoaded', () => {
    localStorage.setItem("channel", "")
    }
    var channel = localStorage.getItem("channel");
+    console.log(channel)
 
+    var x=document.querySelectorAll(".user_channel");
+    xlength=document.querySelectorAll(".user_channel").length;
+
+    for (var a=0; a<xlength; a++){
+       if(x[a].innerHTML === channel){
+       x[a].style.backgroundColor = "#a6acaf";
+       }
+    }
 
 
 //on selecting a channel--------------------------------------------
@@ -21,18 +30,17 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             else {
-                var x=document.querySelectorAll(".user_channel");
-                xlength=document.querySelectorAll(".user_channel").length;
-                    for(var i=0; i < xlength; i++){
-                    x[i].style.backgroundColor = "";
-                    }
+                for(var i=0; i < xlength; i++){
+                x[i].style.backgroundColor = "";
+                }
+                li.style.backgroundColor = "#a6acaf";
                 document.querySelector("#message-area").innerHTML = ''
+
                 socket.emit("leave", {"username": username, "room": channel});
                 socket.emit("just joined", {"username": username, "room": newchannel});
 
-                li.style.backgroundColor = "#a6acaf";
+
                 channel = newchannel;
-                console.log(channel)
                 document.querySelector("#usertext").focus()
             }
             localStorage.setItem("channel", channel)
@@ -44,9 +52,9 @@ document.addEventListener('DOMContentLoaded', () => {
      socket.on("user joined", data => {
          document.querySelector("#notification_section").innerHTML = `${data.details}`;
          const jsonmsg = JSON.parse(`${data.storedjsonmessage}`)
-         console.log(jsonmsg)
+//         console.log(jsonmsg)
          const jsonmsglength = jsonmsg.length;
-         console.log(jsonmsglength)
+//         console.log(jsonmsglength)
 
          if(username ===`${data.username}`){
              for(var i = 0; i< jsonmsglength; i++){
@@ -101,5 +109,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector("#message-area").append(username_p);
         document.querySelector("#message-area").append(message_p);
         document.querySelector("#message-area").append(time_p);
+
     });
 });
