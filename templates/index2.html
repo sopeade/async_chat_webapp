@@ -22,7 +22,9 @@
             if (!temp) {
             var username = localStorage.getItem("username")
             }
-
+            window.onload = function(){
+            document.getElementById("user_name").innerHTML = username;
+            }
 
         </script>
 
@@ -53,6 +55,7 @@
                 </h3>
 
                 <div id="message-flash">
+                     <div>Username: <div id="user_name"></div></div>
                     {% with messages = get_flashed_messages() %}
                         {% if messages %}
 
@@ -94,27 +97,51 @@
               <!--Message area-->
             <div class="right-area">
 
-                <div id="message-area">
-                </div>
+                <div id="message-area"></div>
                 <div class="textsend-area">
                     <!--<div id="textbox">-->
                     <textarea id="usertext">
 
                     </textarea>
                     <!--</div>-->
+
+
                     <!--<div id="send_button">-->
                         <button id="send">
                             Send
                         </button>
                     <!--</div>-->
+                    <div class="custom-file">
+
+                        <div>
+                            {% with messages = get_flashed_messages() %}
+
+                            {% if messages %}
+                                <small id="file_notification" class="flashes">
+                                {{ message }}
+                                </small>
+                            {% endif %}
+                            {% endwith %}
+                        </div>
+
+                            <form enctype="multipart/form-data" action="/upload_file" method="post">
+                                <p>File: <input type="file" class="custom-file-input" id="user_file" name="user_file"/></p>
+                                <p><input type="submit" value="upload"/></p>
+                            </form>
+
+                        <a id="url_string"></a>
+                    </div>
                 </div>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+
+
             </div>
 
         </div>
 
 {% endblock %}
-
-
-
-
-

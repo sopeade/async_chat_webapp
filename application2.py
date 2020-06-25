@@ -1,16 +1,74 @@
+import os
 from time import localtime, strftime
-from flask import Flask, render_template, request, session, redirect, flash
+from flask import Flask, render_template, request, session, \
+    redirect, flash, url_for, send_from_directory, abort
 from flask_socketio import SocketIO, emit, join_room, leave_room
+from werkzeug.utils import secure_filename
+
 import json
 
+STORAGE_FOLDER = r'C:\Users\lolab\Online Coursework\CS50_HarvardX\Project 2\lecture1_javascript\Testwork\storage'
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+
+
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "Mysecret"
+app.config["SECRET_KEY"] = os.environ.get("MY_CHAT_APP_KEY")
+app.config["STORAGE_FOLDER"] = STORAGE_FOLDER
+app.config["ALLOWED_EXTENSIONS"] = ALLOWED_EXTENSIONS
+app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024
+
+
 socketio = SocketIO(app)
 
+# global variables used
 usersregistered = {}
 channels = []
 storedmessages = dict()
 selected_channel = []
+# current_room = "Music"
+
+
+def allowed_files(filename):
+    if "." not in filename:
+        return False
+    ext = filename.rsplit(".", 1)[1]
+    if ext.lower() in app.config["ALLOWED_EXTENSIONS"]:
+        return True
+    else:
+        return False
+
+
+@app.route("/upload_file", methods=["GET", "POST"])
+def upload_file():
+    if request.method == "POST":
+        if request.files:
+            sent_data = request.files['user_file']
+
+            if sent_data.filename == "":
+                flash("No file selected")
+                return redirect(request.url)
+
+            if not allowed_files(sent_data.filename):
+                print("That file extension is not allowed")
+                return redirect(request.url)
+            else:
+                filename = secure_filename(sent_data.filename)
+                print("999999999999999")
+                print(filename)
+
+            sent_data.save(os.path.join(app.config["STORAGE_FOLDER"], filename))
+            return redirect(url_for("sent_files", filename=filename))
+
+
+@app.route('/download_file/<filename>')
+def download_file(filename):
+
+    try:
+        return send_from_directory(app.config["STORAGE_FOLDER"],
+                                   filename=filename, as_attachment=True)
+
+    except FileNotFoundError:
+        abort(404)
 
 
 # Route1
@@ -20,11 +78,6 @@ def start():
         return render_template("signin.html")
     else:
         return render_template("index2.html", username=session['username'], channels=channels)
-
-    # try:
-    #     return render_template("index2.html", username=session['username'], channels=channels)
-    # except:
-    #     return render_template("signin.html")
 
 
 # Route2
@@ -77,19 +130,31 @@ def logout():
 
 
 # Route7
-@app.route("/channels/", methods=["GET", "POST"])
+@app.route("/channels", methods=["GET", "POST"])
 def channel():
-    newChannel = request.form.get("usr-channel")
-    session["channel"] = newChannel
-    if not channels and not newChannel:
-        flash("A Channel has not been created yet. Please create a channel")
-    elif channels and not newChannel:
-        flash("A channel has to have a name. To create a new channel, Please enter a name")
-    elif newChannel in channels:
-        flash("That channel already exists")
+    # filename = "a_pic.jpg"
+    if request.method == "POST":
+        newChannel = request.form.get("usr-channel")
+        # session["channel"] = newChannel
+
+        if not channels and not newChannel:
+            flash("A Channel has not been created yet. Please create a channel")
+        elif channels and not newChannel:
+            flash("A channel has to have a name. To create a new channel, Please enter a name")
+        elif newChannel in channels:
+            flash("That channel already exists")
+        else:
+            channels.append(newChannel)
+            session["channel"] = channels
+        return render_template("/index2.html", channels=channels)
     else:
-        channels.append(newChannel)
-    return render_template("/index2.html", channels=channels)
+        return render_template("/index2.html", channels=session["channel"])
+
+
+@app.route("/sent_files/<filename>", methods=["GET"])
+def sent_files(filename):
+    socketio.emit("sent_file", {"filename": filename}, broadcast=True)
+    return render_template("/index2.html", channels=session["channel"], filename=filename)
 
 
 # Route8
@@ -98,6 +163,8 @@ def mydata(data):
     username = data["username"]
     usermessage = data["usermessage"]
     room = data["room"]
+    session["room"] = room
+    print(room)
     timestamp = strftime('%Y-%m-%d %I:%M%p', localtime())
     try:
         storedmessages[room].extend([username, usermessage, timestamp])
@@ -116,12 +183,11 @@ def mydata(data):
 def join(data):
     username = data["username"]
     room = data["room"]
-    print("selected channel************************************************")
-    print(room)
-
+    current_room = room
     join_room(room)
     try:
         storedmessages[room]
+
     except KeyError:
         storedmessages[room] = list()
     json_messages = json.dumps(storedmessages[room])
@@ -131,10 +197,10 @@ def join(data):
                          "storedjsonmessage": json_messages, "username": username, "room": room}, room=room)
 
 
-# # Route10
-# @socketio.on("leave")
-# def join(data):
-#     username = data["username"]
-#     room = data["room"]
-#     leave_room(room)
-#     emit("user left", {"details": username + ' has left the ' + room + ' channel.'}, room=room)
+# Route10
+@socketio.on("leave")
+def leave(data):
+    username = data["username"]
+    room = data["room"]
+    leave_room(room)
+    emit("user left", {"details": username + ' has left the ' + room + ' channel.'}, room=room)

@@ -2,7 +2,7 @@
 .main-section{
 display: grid;
 grid-template-columns: 25% 75%;
-grid-template-rows: 75%;
+grid-template-rows: 65%;
 /*grid-auto-rows: minmax(1000px, auto)*/
 grid-gap: 1em;
 border-style: double;
@@ -42,6 +42,9 @@ grid-template-rows: 8fr 2fr;
 border-style: solid;
 padding: 1em;
 margin-right: 50px;
+border-radius:1em;
+height: auto;
+
 }
 
 

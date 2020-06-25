@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
    localStorage.setItem("channel", "")
    }
    var channel = localStorage.getItem("channel");
-    console.log(channel)
+
 
     var x=document.querySelectorAll(".user_channel");
     xlength=document.querySelectorAll(".user_channel").length;
@@ -52,9 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
      socket.on("user joined", data => {
          document.querySelector("#notification_section").innerHTML = `${data.details}`;
          const jsonmsg = JSON.parse(`${data.storedjsonmessage}`)
-//         console.log(jsonmsg)
          const jsonmsglength = jsonmsg.length;
-//         console.log(jsonmsglength)
 
          if(username ===`${data.username}`){
              for(var i = 0; i< jsonmsglength; i++){
@@ -65,6 +63,25 @@ document.addEventListener('DOMContentLoaded', () => {
              }
          }
     })
+
+
+    socket.on("sent_file", data => {
+
+        var x = "<a href=\"{{url_for(\'download_file\', filename=\'"
+        var y = `${data.filename}`
+        var z = "\')}}\"><i class=\"material-icons\" style=\"font-size:36px\">attachment</i></a>"
+        var entire_url_var = x + y + z
+        console.log(entire_url_var)
+        document.querySelector("#url_string").innerHTML = entire_url_var
+        }
+    )
+
+
+    socket.on("user left", data => {
+        document.querySelector("#notification_section").innerHTML = `${data.details}`;
+    })
+
+
 
 
 //Send messages to users in a channel--------------------------------------------
@@ -84,6 +101,8 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelector("#send").disabled = true;
             let usertext = document.querySelector("#usertext").value
             socket.emit("text message", {"usermessage": usertext, "username": username, "room": channel});
+            console.log(channel)
+
             document.querySelector("#usertext").value = '';
             document.querySelector("#usertext").focus()
 
