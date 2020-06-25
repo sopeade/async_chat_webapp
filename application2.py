@@ -164,7 +164,6 @@ def mydata(data):
     usermessage = data["usermessage"]
     room = data["room"]
     session["room"] = room
-    print(room)
     timestamp = strftime('%Y-%m-%d %I:%M%p', localtime())
     try:
         storedmessages[room].extend([username, usermessage, timestamp])
