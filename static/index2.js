@@ -20,7 +20,23 @@ document.addEventListener('DOMContentLoaded', () => {
        }
     }
 
+        console.log(2)
 
+   document.querySelector("#form-upload").onclick = function() {
+
+        console.log(3)
+    }
+   document.querySelector("#selected_file").onsubmit = function() {
+
+        console.log(4)
+    };
+
+    document.querySelector("#selected_file").onsubmit = function() {
+
+        console.log(4)
+    };
+
+     console.log(5)
 //on selecting a channel--------------------------------------------
     document.querySelectorAll(".user_channel").forEach(li => {
         li.onclick = () => {
@@ -40,12 +56,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 socket.emit("just joined", {"username": username, "room": newchannel});
 
 
+
                 channel = newchannel;
                 document.querySelector("#usertext").focus()
             }
             localStorage.setItem("channel", channel)
         }
     })
+
 
 
 //display a channels previous messages to a user-------------------------

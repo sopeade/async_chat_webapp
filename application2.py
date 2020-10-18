@@ -154,8 +154,16 @@ def channel():
 @app.route("/sent_files/<filename>", methods=["GET"])
 def sent_files(filename):
     socketio.emit("sent_file", {"filename": filename}, broadcast=True)
-    return render_template("/index2.html", channels=session["channel"], filename=filename)
+    # , channels=session["channel"]
+    return render_template("/index2.html", filename=filename)
 
+# @socketio.on("file_uploaded")
+# def file_uploaded(data):
+#     url = data["url_link"]
+#     room = data["room"]
+#     print("0000000000000011111111111")
+#     print(url, room)
+#     return render_template("/index2.html", url=url, room=room)
 
 # Route8
 @socketio.on("text message")

@@ -12,6 +12,7 @@
 
 
 {% block body %}
+
         <script type="text/javascript">
 
             const temp = `{{ username|e }}`;
@@ -124,9 +125,15 @@
                             {% endwith %}
                         </div>
 
-                            <form enctype="multipart/form-data" action="/upload_file" method="post">
-                                <p>File: <input type="file" class="custom-file-input" id="user_file" name="user_file"/></p>
-                                <p><input type="submit" value="upload"/></p>
+                            <form id="selected_file" enctype="multipart/form-data" action="/upload_file" method="post">
+
+                                <p>
+                                    <input class="custom-file-input" id="user_file" name="user_file" type="file" />
+                                </p>
+
+                                <p>
+                                    <input id="form-upload" type="submit" value="upload"/>
+                                </p>
                             </form>
 
                         <a id="url_string"></a>
